@@ -1,0 +1,41 @@
+.dashboard {
+  background-color: var(--color-background);
+  width: 100%;
+  max-width: 60rem;
+  padding-inline: 2rem;
+  padding-block: 2.4rem;
+  border-radius: 2.4rem;
+  margin-inline: auto;
+}
+
+.head {
+  padding-block-end: 1.6rem;
+}
+
+.body {
+  padding-block: 1.6rem;
+}
+
+.actions {
+  padding-block-start: 1.6rem;
+}
+
+.title {
+  font-size: 2.4rem;
+}
+
+.subtitle {
+  color: color-mix(in srgb, var(--color-dark) 60%, transparent);
+  font-size: 1.4rem;
+  font-weight: 400;
+}
+
+@media screen and (min-width: 750px) {
+  .title {
+    font-size: 2.8rem;
+  }
+
+  .subtitle {
+    font-size: 1.8rem;
+  }
+}
