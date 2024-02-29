@@ -33,6 +33,7 @@ export default function ListItems() {
           id={item.id}
           title={item.title}
           notes={item.notes}
+          added={item.added}
           key={item.id}
         />
       ))}

@@ -1,13 +1,15 @@
-import styles from "./button.module.css";
+import styles from "./Button.module.css";
 
-type Props = {
-  children?: React.ReactNode;
-  onClick?: () => void;
-};
+interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  secondary?: boolean;
+}
 
-export default function Button({ children, onClick }: Props) {
+export default function Button({ children, secondary, ...props }: Props) {
   return (
-    <button className={styles.button} onClick={onClick}>
+    <button
+      className={`${styles.button} ${secondary ? styles.secondary : ""}`}
+      {...props}
+    >
       {children}
     </button>
   );

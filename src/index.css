@@ -1,21 +1,19 @@
 @import url("./resets.css");
 
 :root {
+  --color-success: #4ca331;
   --color-dark: #000;
   --color-background: #f2f2f2;
-  --font-family-primary: BlinkMacSystemFont,
-    -apple-system,
-    "Segoe UI",
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    "Fira Sans",
-    "Droid Sans",
-    "Helvetica Neue",
-    Helvetica,
-    Arial,
-    sans-serif;
+  --color: #fff;
+  --color-secondary: #000;
+  --background-light: #fff;
+  --background-color: #288cc9;
+  --background-secondary-color: #c4c4c4;
+  --color-link: #288cc9;
+  --color-border: #ccc;
+  --font-family-primary: BlinkMacSystemFont, -apple-system, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
+    Helvetica, Arial, sans-serif;
 }
 
 body {

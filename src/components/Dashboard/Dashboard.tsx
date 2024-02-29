@@ -1,9 +1,19 @@
+import { useState, useCallback } from "react";
+
 import ListItems from "@components/ListItems";
 import Button from "@components/Button";
 import ListItemForm from "@components/ListItemForm";
 import styles from "./Dashboard.module.css";
 
 export default function Dashboard() {
+  const [formStatus, setFormStatus] = useState({
+    item: null,
+    active: false,
+  });
+  const toggleForm = useCallback(() => {
+    setFormStatus({ ...formStatus, active: !formStatus.active });
+  }, [formStatus]);
+
   return (
     <div className={styles.dashboard}>
       <header className={styles.head}>
@@ -16,10 +26,24 @@ export default function Dashboard() {
         <ListItems />
       </div>
 
-      <div className={styles.actions}>
-        <Button onClick={() => alert("Add item")}>Add shopping item</Button>
-        <ListItemForm />
-      </div>
+      {!formStatus.active && (
+        <div className={styles.actions}>
+          <Button onClick={toggleForm}>Add shopping item</Button>
+        </div>
+      )}
+      {formStatus.active && (
+        <>
+          <div className={styles.form}>
+            <ListItemForm />
+          </div>
+
+          <div className={styles.actions}>
+            <Button secondary onClick={toggleForm}>
+              Cancel
+            </Button>
+          </div>
+        </>
+      )}
     </div>
   );
 }

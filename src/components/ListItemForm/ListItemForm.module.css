@@ -1,0 +1,29 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  padding-block: 1.6rem;
+}
+
+.form input[type="text"],
+.form textarea {
+  background: var(--background-light);
+  width: 100%;
+  display: block;
+  padding-inline: 1.2rem;
+  border: 0.1rem solid var(--color-border);
+  border-radius: 0;
+}
+
+.form input[type="text"] {
+  height: 4rem;
+}
+
+.form textarea {
+  padding-block: 1.2rem;
+  resize: vertical;
+}
+
+.form input[type="checkbox"] {
+  margin-inline-end: 0.8rem;
+}
