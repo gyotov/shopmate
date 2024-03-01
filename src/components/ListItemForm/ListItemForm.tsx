@@ -4,48 +4,38 @@ import { v4 as uuidv4 } from "uuid";
 import Button from "@components/Button";
 import styles from "./ListItemForm.module.css";
 
-import {
-  INITIAL_ITEM_STATE,
-  LOCAL_STORAGE_ITEM_KEY,
-  LOCAL_STORAGE_ITEM_EVENT,
-} from "@utils/constants";
+import { INITIAL_ITEM_STATE, LOCAL_STORAGE_ITEM_KEY } from "@utils/constants";
+import useLocalStorageAPI from "@hooks/useLocalStorage";
 
 export default function ListItemForm() {
-  const [state, setState] = useState(INITIAL_ITEM_STATE);
-  const shouldSubmit = state.title !== "";
+  const [, setLocalStorageStateValue] = useLocalStorageAPI(
+    LOCAL_STORAGE_ITEM_KEY
+  );
+  const [formState, setFormState] = useState(INITIAL_ITEM_STATE);
+  const shouldSubmit = formState.title !== "";
   const onChange = (
     event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = event.currentTarget;
 
     if (name === "added") {
-      return setState({ ...state, added: !state.added });
+      return setFormState({ ...formState, added: !formState.added });
     }
 
-    setState({ ...state, [name]: value });
-  };
-  const saveItemToLocalStorage = () => {
-    const itemValue = {
-      id: uuidv4(),
-      ...state,
-    };
-    const localeStorageItem = localStorage.getItem(LOCAL_STORAGE_ITEM_KEY);
-
-    localStorage.setItem(
-      LOCAL_STORAGE_ITEM_KEY,
-      localeStorageItem
-        ? JSON.stringify([itemValue, ...JSON.parse(localeStorageItem)])
-        : JSON.stringify([itemValue])
-    );
-    window.dispatchEvent(new Event(LOCAL_STORAGE_ITEM_EVENT));
+    setFormState({ ...formState, [name]: value });
   };
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (!shouldSubmit) return;
 
-    saveItemToLocalStorage();
-    setState(INITIAL_ITEM_STATE);
+    const itemValue = {
+      id: uuidv4(),
+      ...formState,
+    };
+
+    setLocalStorageStateValue(itemValue);
+    setFormState(INITIAL_ITEM_STATE);
   };
 
   return (
@@ -53,14 +43,14 @@ export default function ListItemForm() {
       <input
         type="text"
         name="title"
-        value={state.title}
+        value={formState.title}
         onChange={onChange}
         placeholder="Title"
         required
       />
       <textarea
         name="notes"
-        value={state.notes}
+        value={formState.notes}
         onChange={onChange}
         placeholder="Notes"
       ></textarea>
@@ -68,7 +58,7 @@ export default function ListItemForm() {
         <input
           type="checkbox"
           name="added"
-          checked={state.added}
+          checked={formState.added}
           onChange={onChange}
           id="Added"
         />

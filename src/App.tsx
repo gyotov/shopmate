@@ -1,10 +1,13 @@
 import Dashboard from "@components/Dashboard";
+import { AppContextProvider } from "@context/context";
 
 function App() {
   return (
-    <div className="app">
-      <Dashboard />
-    </div>
+    <AppContextProvider>
+      <div className="app">
+        <Dashboard />
+      </div>
+    </AppContextProvider>
   );
 }
 

@@ -1,29 +1,24 @@
-import { useState, useEffect, useCallback } from "react";
+import { useEffect, useState } from "react";
 
 import ListItem, { ListItemProps } from "@components/ListItem";
-import {
-  LOCAL_STORAGE_ITEM_EVENT,
-  LOCAL_STORAGE_ITEM_KEY,
-} from "@utils/constants";
+import useLocalStorage from "@hooks/useLocalStorage";
+import { LOCAL_STORAGE_ITEM_KEY } from "@utils/constants";
 
 export default function ListItems() {
-  const [loaded, setLoaded] = useState(false);
-  const [items, setItems] = useState<ListItemProps[]>([]);
-  const retrieveLocalStorageItems = useCallback(() => {
-    const localStorageItems = localStorage.getItem(LOCAL_STORAGE_ITEM_KEY);
-
-    setItems(localStorageItems ? JSON.parse(localStorageItems) : []);
-  }, []);
+  const [localStorageValue] = useLocalStorage(LOCAL_STORAGE_ITEM_KEY);
+  const [items, setItems] = useState(localStorageValue);
 
   useEffect(() => {
-    retrieveLocalStorageItems();
-    setLoaded(true);
-    window.addEventListener(LOCAL_STORAGE_ITEM_EVENT, () => {
-      retrieveLocalStorageItems();
-    });
-  }, [retrieveLocalStorageItems]);
+    const onStorage = (event: StorageEvent) => {
+      const payload = event.newValue || "[]";
+      setItems(JSON.parse(payload));
+    };
 
-  if (!loaded) return <p>Loading...</p>;
+    window.addEventListener("storage", onStorage);
+
+    return () => window.removeEventListener("storage", onStorage);
+  }, []);
+
   if (items.length === 0) return <p>No shopping items added yet.</p>;
 
   return (
