@@ -23,8 +23,10 @@ export default function ListItems({ id, title, notes, added }: Props) {
     });
   }, [id, title, notes, added, state, setState]);
   const onDelete = useCallback(() => {
-    deleteItem(id);
-  }, [id]);
+    if (confirm(`Do you want to remove ${title} from your list?`)) {
+      deleteItem(id);
+    }
+  }, [id, title]);
 
   return (
     <div className={styles.item}>
