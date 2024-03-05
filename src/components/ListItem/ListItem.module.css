@@ -19,10 +19,20 @@
 
 .content {
   flex: 1;
+  display: flex;
+  gap: 1.6rem;
 }
 
 .content small {
   color: var(--color-success);
+}
+
+.contentMain {
+  flex: 1;
+}
+
+.checkmark {
+  margin-top: 0.4rem;
 }
 
 .actions {

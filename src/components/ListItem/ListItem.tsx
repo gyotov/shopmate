@@ -1,7 +1,7 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { useAppContext } from "@hooks/useAppContext";
-import { deleteItem } from "@utils/localStorageAPI";
+import { deleteItem, updateItem } from "@utils/localStorageAPI";
 import styles from "./ListItem.module.css";
 
 export type Props = {
@@ -13,6 +13,7 @@ export type Props = {
 
 export default function ListItems({ id, title, notes, added }: Props) {
   const { state, setState } = useAppContext();
+  const [isAdded, setIsAdded] = useState(added);
   const onEdit = useCallback(() => {
     setState({
       ...state,
@@ -27,13 +28,31 @@ export default function ListItems({ id, title, notes, added }: Props) {
       deleteItem(id);
     }
   }, [id, title]);
+  const onAddedChange = useCallback(() => {
+    setIsAdded(!isAdded);
+  }, [isAdded]);
+
+  useEffect(() => {
+    updateItem({ id, title, notes, added: isAdded });
+  }, [isAdded, id, title, notes]);
 
   return (
     <div className={styles.item}>
       <div className={styles.content}>
-        <h3>{title}</h3>
-        {notes && <p>{notes}</p>}
-        {added && <small>Added to cart</small>}
+        <div className={styles.checkmark}>
+          <input
+            type="checkbox"
+            name={`List-Item-${id}`}
+            checked={isAdded}
+            onChange={onAddedChange}
+          />
+        </div>
+
+        <div className={styles.contentMain}>
+          <h3>{title}</h3>
+          {notes && <p>{notes}</p>}
+          {added && <small>Added to cart</small>}
+        </div>
       </div>
 
       <div className={styles.actions}>

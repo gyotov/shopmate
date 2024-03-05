@@ -27,10 +27,6 @@ export default function ListItemForm() {
   ) => {
     const { name, value } = event.currentTarget;
 
-    if (name === "added") {
-      return setFormState({ ...formState, added: !formState.added });
-    }
-
     setFormState({ ...formState, [name]: value });
   };
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -77,16 +73,6 @@ export default function ListItemForm() {
         onChange={onChange}
         placeholder="Notes"
       ></textarea>
-      <div>
-        <input
-          type="checkbox"
-          name="added"
-          checked={formState.added}
-          onChange={onChange}
-          id="Added"
-        />
-        <label htmlFor="Added">Added to cart</label>
-      </div>
       <Button type="submit" disabled={!shouldSubmit}>
         Save
       </Button>
