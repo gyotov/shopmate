@@ -1,3 +1,7 @@
+import { useCallback } from "react";
+
+import { useAppContext } from "@hooks/useAppContext";
+import { deleteItem } from "@utils/localStorageAPI";
 import styles from "./ListItem.module.css";
 
 export type Props = {
@@ -7,7 +11,21 @@ export type Props = {
   added?: boolean;
 };
 
-export default function ListItems({ title, notes, added }: Props) {
+export default function ListItems({ id, title, notes, added }: Props) {
+  const { state, setState } = useAppContext();
+  const onEdit = useCallback(() => {
+    setState({
+      ...state,
+      form: {
+        item: { id, title, notes, added },
+        active: true,
+      },
+    });
+  }, [id, title, notes, added, state, setState]);
+  const onDelete = useCallback(() => {
+    deleteItem(id);
+  }, [id]);
+
   return (
     <div className={styles.item}>
       <div className={styles.content}>
@@ -17,8 +35,8 @@ export default function ListItems({ title, notes, added }: Props) {
       </div>
 
       <div className={styles.actions}>
-        <button>Edit</button>
-        <button>Remove</button>
+        <button onClick={onEdit}>Edit</button>
+        <button onClick={onDelete}>Remove</button>
       </div>
     </div>
   );

@@ -1,18 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import Button from "@components/Button";
+import { INITIAL_ITEM_STATE } from "@utils/constants";
+import { useAppContext } from "@hooks/useAppContext";
+import { addItem, updateItem } from "@utils/localStorageAPI";
 import styles from "./ListItemForm.module.css";
 
-import { INITIAL_ITEM_STATE, LOCAL_STORAGE_ITEM_KEY } from "@utils/constants";
-import useLocalStorageAPI from "@hooks/useLocalStorage";
-
 export default function ListItemForm() {
-  const [, setLocalStorageStateValue] = useLocalStorageAPI(
-    LOCAL_STORAGE_ITEM_KEY
+  const { state, setState } = useAppContext();
+  const [formState, setFormState] = useState(
+    state.form.item || INITIAL_ITEM_STATE
   );
-  const [formState, setFormState] = useState(INITIAL_ITEM_STATE);
   const shouldSubmit = formState.title !== "";
+  const resetForm = useCallback(() => {
+    setState({
+      ...state,
+      form: {
+        item: null,
+        active: false,
+      },
+    });
+  }, [state, setState]);
   const onChange = (
     event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -30,13 +39,23 @@ export default function ListItemForm() {
     if (!shouldSubmit) return;
 
     const itemValue = {
-      id: uuidv4(),
+      id: state?.form?.item?.id || uuidv4(),
       ...formState,
     };
 
-    setLocalStorageStateValue(itemValue);
-    setFormState(INITIAL_ITEM_STATE);
+    if (state.form.item) {
+      updateItem(itemValue);
+      resetForm();
+      return;
+    }
+
+    addItem(itemValue);
+    resetForm();
   };
+
+  useEffect(() => {
+    setFormState(state.form.item || INITIAL_ITEM_STATE);
+  }, [state.form.item]);
 
   return (
     <form className={styles.form} onSubmit={onSubmit}>

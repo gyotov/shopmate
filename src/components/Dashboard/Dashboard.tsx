@@ -1,18 +1,24 @@
-import { useState, useCallback } from "react";
+import { useCallback } from "react";
 
+import { useAppContext } from "@hooks/useAppContext";
 import ListItems from "@components/ListItems";
 import Button from "@components/Button";
 import ListItemForm from "@components/ListItemForm";
 import styles from "./Dashboard.module.css";
 
 export default function Dashboard() {
-  const [formStatus, setFormStatus] = useState({
-    item: null,
-    active: false,
-  });
+  const { state, setState } = useAppContext();
   const toggleForm = useCallback(() => {
-    setFormStatus({ ...formStatus, active: !formStatus.active });
-  }, [formStatus]);
+    const formActive = !state.form.active;
+
+    setState({
+      ...state,
+      form: {
+        item: formActive && state.form.item ? state.form.item : null,
+        active: formActive,
+      },
+    });
+  }, [state, setState]);
 
   return (
     <div className={styles.dashboard}>
@@ -26,12 +32,12 @@ export default function Dashboard() {
         <ListItems />
       </div>
 
-      {!formStatus.active && (
+      {!state.form.active && (
         <div className={styles.actions}>
           <Button onClick={toggleForm}>Add shopping item</Button>
         </div>
       )}
-      {formStatus.active && (
+      {state.form.active && (
         <>
           <div className={styles.form}>
             <ListItemForm />
