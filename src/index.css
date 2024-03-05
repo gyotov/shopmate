@@ -30,6 +30,11 @@ body {
   font-size: 1.6rem;
 }
 
+:focus {
+  outline: 0.2rem solid var(--color-dark);
+  outline-offset: 0.3rem;
+}
+
 .app {
   margin: 3.2rem;
 }
