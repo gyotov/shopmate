@@ -49,8 +49,12 @@ export default function ListItemForm() {
       return;
     }
 
-    addItem(itemValue);
-    resetForm();
+    try {
+      addItem(itemValue);
+      resetForm();
+    } catch (error) {
+      alert(error);
+    }
   };
 
   useEffect(() => {
