@@ -9,7 +9,7 @@ import { INITIAL_CONTEXT_VALUE } from "@utils/constants";
 import { ListItemProps } from "@components/ListItem";
 
 type State = {
-  form: {
+  form?: {
     active: boolean;
     item: ListItemProps | null;
   };
