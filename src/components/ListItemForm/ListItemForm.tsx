@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import Button from "@components/Button";
-import { INITIAL_ITEM_STATE } from "@utils/constants";
+import { INITIAL_ITEM_STATE, INITIAL_CONTEXT_VALUE } from "@utils/constants";
 import { useAppContext } from "@hooks/useAppContext";
 import { addItem, updateItem } from "@utils/localStorageAPI";
 import styles from "./ListItemForm.module.css";
@@ -14,13 +14,7 @@ export default function ListItemForm() {
   );
   const shouldSubmit = formState.title !== "";
   const resetForm = useCallback(() => {
-    setState({
-      ...state,
-      form: {
-        item: null,
-        active: false,
-      },
-    });
+    setState({ ...state, form: INITIAL_CONTEXT_VALUE.form });
   }, [state, setState]);
   const onChange = (
     event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
