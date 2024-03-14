@@ -11,7 +11,7 @@ export type Props = {
   added?: boolean;
 };
 
-export default function ListItems({ id, title, notes, added }: Props) {
+export default function ListItem({ id, title, notes, added }: Props) {
   const { state, setState } = useAppContext();
   const [isAdded, setIsAdded] = useState(added);
   const onEdit = useCallback(() => {
